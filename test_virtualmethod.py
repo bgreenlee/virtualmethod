@@ -16,19 +16,19 @@ class Base(object):
     def my_virtual_static_method():
         return True
 
-    @classmethod
-    def my_class_method(cls):
-        return True
-
-    @staticmethod
-    def my_static_method():
-        return True
-
 class A(Base):
     pass
 
 class B(Base):
     def my_virtual_method(self):
+        return True
+    
+    @classmethod
+    def my_virtual_class_method(cls):
+        return True
+
+    @staticmethod
+    def my_virtual_static_method():
         return True
 
 class VirtualMethodTest(unittest.TestCase):
@@ -47,17 +47,11 @@ class VirtualMethodTest(unittest.TestCase):
         self.assertTrue(B.my_virtual_class_method())
         self.assertRaises(TypeError, Base.my_virtual_class_method)
     
-    def test_class_method(self):
-        self.assertTrue(Base.my_class_method())
-
     def test_virtual_static_method(self):
         self.assertTrue(A.my_virtual_static_method())
         self.assertTrue(B.my_virtual_static_method())
         self.assertRaises(TypeError, Base.my_virtual_static_method)
     
-    def test_static_method(self):
-        self.assertTrue(Base.my_static_method())
-
 def main():
     unittest.main()
 
