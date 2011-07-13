@@ -1,17 +1,8 @@
-import types
+from method_decorator import method_decorator
 
-class virtualmethod(object):
-    def __init__(self, func):
-        self.func = func
-
-    def __get__(self, obj, ownerClass=None):
-        # return a wrapper that binds self as a method of obj
-        return types.MethodType(self, obj)
-
+class virtualmethod(method_decorator):
     def __call__(self, *args, **kwargs):
-        cls_dict = args[0].__class__.__dict__
-        func_name = self.func.__name__
-        # check to see if the virtualmethod is defined in this class
-        if cls_dict.has_key(func_name) and cls_dict[func_name].__class__ == self.__class__:
-            raise TypeError("Virtual method %s must be called from a subclass." % func_name)
-        return self.func(*args, **kwargs)
+        if self.cls and self.cls.__dict__.has_key(self.__name__):
+            raise TypeError("Virtual method %s must be called from a subclass." % self.__name__)
+        return method_decorator.__call__( self, *args, **kwargs )
+        
